@@ -1,5 +1,29 @@
 import WorkoutSession from "./workoutPlan.js";
 
+/***************
+ **     UI    **
+ ***************/
+document.querySelectorAll(".nav-btn").forEach((button) => {
+  button.addEventListener("click", () => {
+    const target = button.getAttribute("data-target");
+    navigateTo(target);
+  });
+});
+
+export function navigateTo(screenId) {
+  const container = document.getElementById("app-container");
+  container.setAttribute("data-current-screen", screenId);
+}
+
+window.addEventListener("hashchange", () => {
+  const screenId = window.location.hash.replace("#", "") || "home";
+  navigateTo(screenId);
+});
+
+/******************
+ **    WORKOUT   **
+ ******************/
+
 export function convertSecondsToMinutes(seconds) {
   const minutes = Math.floor(seconds / 60);
   const secs = seconds % 60;

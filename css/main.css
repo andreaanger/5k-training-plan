@@ -1,0 +1,85 @@
+/************************* 
+**       GENERAL        **
+**************************/
+/*
+COLORS
+* BLACK: #001214
+* GREEN: #E0FF4F
+*/
+
+body {
+  position: absolute;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  font-family: "Futura", sans-serif;
+  font-weight: bold;
+  color: #e0ff4f;
+  background-color: #001214;
+}
+
+#app-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/************************* 
+**  SCREEN NAVIGATION   **
+**************************/
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* Start invisible and non-clickable */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Only show the screen that matches the container's data-attribute */
+[data-current-screen="home"] #home {
+  opacity: 1;
+  visibility: visible;
+}
+
+[data-current-screen="settings"] #settings {
+  opacity: 1;
+  visibility: visible;
+}
+
+[data-current-screen="workout"] #workout {
+  opacity: 1;
+  visibility: visible;
+}
+
+[data-current-screen="action"] #action {
+  opacity: 1;
+  visibility: visible;
+}
+
+/**********************
+**    HOME SCREEN    **
+***********************/
+#home-title {
+  font-size: 13em;
+}
+
+#home-start-btn {
+  padding: 15px 45px 15px 30px;
+  font-size: 1.2em;
+  background: linear-gradient(
+    110deg,
+    #001214 0% 10%,
+    #e0ff4f 10% 30%,
+    #e0ff4f 30% 83%,
+    #001214 83% 86%,
+    #001214 90%
+  );
+  color: #001214;
+  border: none;
+}

@@ -4,12 +4,51 @@
     <link rel="icon" type="image/png" href="/5k_favicon.png" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- <link rel="stylesheet" href="css/main.css" /> -->
+    <link rel="stylesheet" href="css/main.css" />
     <script type="module" src="javascript/main.js"></script>
-    <!-- <script src="javascript/workoutPlan.js"></script> -->
     <title>5K Training Plan</title>
   </head>
   <body>
-    <h1 id="home-title">5k</h1>
+    <main id="app-container" data-current-screen="home">
+      <!-- HOME SCREEN -->
+      <section id="home" class="screen">
+        <h1 id="home-title">5k</h1>
+        <button
+          id="home-workout-settings"
+          class="nav-btn"
+          data-target="settings"
+        >
+          SETTINGS
+        </button>
+        <button id="home-week-number-button">WEEK 1</button>
+        <div id="home-workout-number-button">
+          <button id="home-workout1-btn">1</button>
+          <button id="home-workout2-btn">2</button>
+          <button id="home-workout3-btn">3</button>
+        </div>
+        <button id="home-start-btn" class="nav-btn" data-target="workout">
+          START
+        </button>
+      </section>
+      <!-- SETTINGS SCREEN -->
+      <section id="settings" class="screen">
+        <button id="settings-exit-btn" class="nav-btn" data-target="home">
+          X
+        </button>
+        <button id="settings-save-btn" class="nav-btn" data-target="home">
+          SAVE
+        </button>
+        <!-- TODO: add week and workout number selection, also display workout -->
+      </section>
+      <!-- WORKOUT SCREEN -->
+      <section id="workout" class="screen">
+        <h1 id="workout-action">READY!</h1>
+        <h3 id="workout-timer">00:00</h3>
+      </section>
+      <!-- ACTION SCREEN -->
+      <section id="action" class="screen">
+        <h1 id="action-title"></h1>
+      </section>
+    </main>
   </body>
 </html>
