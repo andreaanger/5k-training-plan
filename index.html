@@ -12,38 +12,74 @@
     <main id="app-container" data-current-screen="home">
       <!-- HOME SCREEN -->
       <section id="home" class="screen">
+        <img id="home-workout-settings-btn" class="nav-btn" data-target="settings" src="./images/settings-icon.svg" alt="navigate to settings" />
         <h1 id="home-title">5k</h1>
-        <button
-          id="home-workout-settings"
-          class="nav-btn"
-          data-target="settings"
-        >
-          SETTINGS
-        </button>
-        <button id="home-week-number-button">WEEK 1</button>
-        <div id="home-workout-number-button">
-          <button id="home-workout1-btn">1</button>
-          <button id="home-workout2-btn">2</button>
-          <button id="home-workout3-btn">3</button>
+        <h1 id="home-week-number" class="nav-btn" data-target="settings">WEEK 1</h1>
+        <div id="home-workout-number-div">
+          <!-- TODO: add javascript to change selected btn on click -->
+          <button class="workout-num-btn btn-selected" id="home-workout1-btn">1</button>
+          <button class="workout-num-btn" id="home-workout2-btn">2</button>
+          <button class="workout-num-btn" id="home-workout3-btn">3</button>
         </div>
-        <button id="home-start-btn" class="nav-btn" data-target="workout">
-          START
-        </button>
+        <button id="home-start-btn" class="nav-btn" data-target="workout">START</button>
       </section>
       <!-- SETTINGS SCREEN -->
       <section id="settings" class="screen">
-        <button id="settings-exit-btn" class="nav-btn" data-target="home">
-          X
-        </button>
-        <button id="settings-save-btn" class="nav-btn" data-target="home">
-          SAVE
-        </button>
-        <!-- TODO: add week and workout number selection, also display workout -->
+        <button id="settings-exit-btn" class="nav-btn" data-target="home">X</button>
+        <h1>WORKOUT SETTINGS</h1>
+        <h3 class="settings-header">DURATIONS</h3>
+        <table id="settings-duration-table">
+          <tr>
+            <td><p class="settings-duration-title">WARM UP</p></td>
+            <td>
+              <div class="slidecontainer">
+                <input type="range" min="1" max="40" value="20" class="settings-duration-slider" id="settings-warmup-slider" />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <!-- TODO: add javascript to change displayed value on change -->
+              <p class="settings-duration-display" id="settings-warmup-duration-label">5:00</p>
+            </td>
+          </tr>
+          <tr>
+            <td><p class="settings-duration-title">COOL DOWN</p></td>
+            <td>
+              <div class="slidecontainer">
+                <input type="range" min="1" max="40" value="20" class="settings-duration-slider" id="settings-cooldown-slider" />
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <!-- TODO: add javascript to change displayed value on change -->
+              <p class="settings-duration-display" id="settings-cooldown-duration-label">5:00</p>
+            </td>
+          </tr>
+        </table>
+        <h3 class="settings-header">WEEK NUMBER</h3>
+        <!-- TODO: add javascript to change selected btn on click -->
+        <div id="settings-week-number-div">
+          <button class="settings-week-num-btn btn-selected" id="settings-week1-btn">1</button>
+          <button class="settings-week-num-btn" id="settings-week2-btn">2</button>
+          <button class="settings-week-num-btn" id="settings-week3-btn">3</button>
+          <button class="settings-week-num-btn" id="settings-week4-btn">4</button>
+          <button class="settings-week-num-btn" id="settings-week5-btn">5</button>
+          <button class="settings-week-num-btn" id="settings-week6-btn">6</button>
+          <button class="settings-week-num-btn" id="settings-week7-btn">7</button>
+          <button class="settings-week-num-btn" id="settings-week8-btn">8</button>
+          <button class="settings-week-num-btn" id="settings-week9-btn">9</button>
+        </div>
+        <!-- TODO: add javascript to update warmup, cooldown, and week number on click -->
+        <button id="settings-save-btn" class="nav-btn" data-target="home">SAVE</button>
       </section>
       <!-- WORKOUT SCREEN -->
       <section id="workout" class="screen">
         <h1 id="workout-action">READY!</h1>
-        <h3 id="workout-timer">00:00</h3>
+        <h3 id="workout-timer">:00</h3>
       </section>
       <!-- ACTION SCREEN -->
       <section id="action" class="screen">
