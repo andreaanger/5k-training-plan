@@ -13,7 +13,7 @@
       <!-- HOME SCREEN -->
       <section id="home" class="screen">
         <button id="home-workout-settings-btn" class="nav-btn" data-target="settings" type="button" aria-label="Open settings">
-          <img id="home-settings-icon" src="./images/settings-icon.svg" width="100%" height="100%"/></button>
+          <img id="home-settings-icon" src="./images/settings-icon.svg" width="100%" height="100%" alt="" />
         </button>
         <h1 id="home-title">5k</h1>
         <button id="home-week-number" class="nav-btn" data-target="settings" type="button">WEEK 1</button>
@@ -32,7 +32,7 @@
         <h3 class="settings-header">DURATIONS</h3>
         <table id="settings-duration-table">
           <tr>
-            <td><p class="settings-duration-title">WARM UP</p></td>
+            <td><label class="settings-duration-title" for="settings-warmup-slider">WARM UP</label></td>
             <td>
               <div class="slidecontainer">
                 <input type="range" min="1" max="40" value="20" class="settings-duration-slider" id="settings-warmup-slider" />
@@ -47,7 +47,7 @@
             </td>
           </tr>
           <tr>
-            <td><p class="settings-duration-title">COOL DOWN</p></td>
+            <td><label class="settings-duration-title" for="settings-cooldown-slider">COOL DOWN</label></td>
             <td>
               <div class="slidecontainer">
                 <input type="range" min="1" max="40" value="20" class="settings-duration-slider" id="settings-cooldown-slider" />
