@@ -15,11 +15,6 @@ export function navigateTo(screenId) {
   container.setAttribute("data-current-screen", screenId);
 }
 
-window.addEventListener("hashchange", () => {
-  const screenId = window.location.hash.replace("#", "") || "home";
-  navigateTo(screenId);
-});
-
 /******************
  **    WORKOUT   **
  ******************/

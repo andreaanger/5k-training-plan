@@ -12,9 +12,11 @@
     <main id="app-container" data-current-screen="home">
       <!-- HOME SCREEN -->
       <section id="home" class="screen">
-        <img id="home-workout-settings-btn" class="nav-btn" data-target="settings" src="./images/settings-icon.svg" alt="navigate to settings" />
+        <button id="home-workout-settings-btn" class="nav-btn" data-target="settings" type="button" aria-label="Open settings">
+          <img id="home-settings-icon" src="./images/settings-icon.svg" width="100%" height="100%"/></button>
+        </button>
         <h1 id="home-title">5k</h1>
-        <h1 id="home-week-number" class="nav-btn" data-target="settings">WEEK 1</h1>
+        <button id="home-week-number" class="nav-btn" data-target="settings" type="button">WEEK 1</button>
         <div id="home-workout-number-div">
           <!-- TODO: add javascript to change selected btn on click -->
           <button class="workout-num-btn btn-selected" id="home-workout1-btn">1</button>
@@ -25,7 +27,7 @@
       </section>
       <!-- SETTINGS SCREEN -->
       <section id="settings" class="screen">
-        <button id="settings-exit-btn" class="nav-btn" data-target="home">X</button>
+        <button id="settings-exit-btn" class="nav-btn" data-target="home" aria-label="Close settings">X</button>
         <h1>WORKOUT SETTINGS</h1>
         <h3 class="settings-header">DURATIONS</h3>
         <table id="settings-duration-table">
