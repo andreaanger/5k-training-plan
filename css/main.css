@@ -1,0 +1,230 @@
+/************************* 
+**       GENERAL        **
+**************************/
+/*
+COLORS
+* BLACK: #001214
+* GREEN: #E0FF4F
+*/
+
+body {
+  width: 90%;
+  margin: 0 auto;
+  padding: 0;
+  background-color: #001214;
+  color: #e0ff4f;
+  font-family: "Futura", sans-serif;
+  font-weight: bold;
+  text-align: center;
+}
+
+#app-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+button {
+  background-color: #e0ff4f;
+  color: #001214;
+  font-family: "Futura", sans-serif;
+  font-weight: bold;
+  text-align: center;
+}
+
+/************************* 
+**  SCREEN NAVIGATION   **
+**************************/
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  /* Start invisible and non-clickable */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Only show the screen that matches the container's data-attribute */
+[data-current-screen="home"] #home {
+  opacity: 1;
+  visibility: visible;
+}
+
+[data-current-screen="settings"] #settings {
+  opacity: 1;
+  visibility: visible;
+}
+
+[data-current-screen="workout"] #workout {
+  opacity: 1;
+  visibility: visible;
+}
+
+[data-current-screen="action"] #action {
+  opacity: 1;
+  visibility: visible;
+}
+
+/**********************
+**    HOME SCREEN    **
+***********************/
+#home-workout-settings-btn {
+  width: 30%;
+  margin-left: 70%;
+  padding: 30px;
+  background-color: transparent;
+  border: none;
+}
+
+#home-title {
+  display: block;
+  width: 100%;
+  margin: 0 auto 20%;
+  font-size: clamp(3em, 20vw, 10em);
+}
+
+#home-week-number {
+  display: block;
+  width: 50%;
+  margin: 30px auto;
+  padding: 10px 0px;
+  outline: 7px solid #e0ff4f;
+  background-color: #001214;
+  color: #e0ff4f;
+  font-size: 2em;
+}
+
+#home-workout-number-div {
+  display: flex;
+  width: 50%;
+  margin: auto;
+  justify-content: space-between;
+}
+
+.workout-num-btn,
+.settings-week-num-btn {
+  width: 30%;
+  aspect-ratio: 1/1;
+  font-size: 2.5em;
+  background-color: #3e422e;
+}
+
+.btn-selected {
+  background-color: #e0ff4f;
+}
+
+#home-start-btn {
+  display: block;
+  width: 60%;
+  margin: 25% auto;
+  padding: 15px 45px 15px 30px;
+  background: linear-gradient(110deg, #001214 0% 10%, #e0ff4f 10% 30%, #e0ff4f 30% 83%, #001214 83% 86%, #001214 90%);
+  border: none;
+  color: #001214;
+  font-size: 1.6em;
+}
+
+/**************************
+**    SETTINGS SCREEN    **
+***************************/
+#settings-exit-btn {
+  display: block;
+  width: 40px;
+  height: 40px;
+  margin-left: 80%;
+}
+
+.settings-duration-title {
+  text-align: left;
+}
+
+.settings-header {
+  width: 60%;
+  margin: 30px auto;
+  padding: 10px 0px;
+  outline: 7px solid #e0ff4f;
+  font-size: 1em;
+}
+
+table {
+  width: 80%;
+  margin: auto;
+}
+
+td {
+  margin: 0;
+}
+
+.slidecontainer {
+  width: 100%;
+}
+
+.settings-duration-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  background: #3e422e;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+
+.settings-duration-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #e0ff4f;
+  cursor: pointer;
+}
+
+.settings-duration-slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #e0ff4f;
+  cursor: pointer;
+}
+
+.settings-duration-display {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+#settings-week-number-div {
+  width: 40%;
+  margin: 20px auto;
+}
+
+#settings-save-btn {
+  display: block;
+  width: 100px;
+  height: 40px;
+  margin: 0 auto;
+}
+
+/**************************
+**    WORKOUT SCREEN     **
+***************************/
+#workout-action,
+#action-title {
+  display: block;
+  width: 100%;
+  margin: 100px auto;
+  font-size: 4em;
+  text-align: center;
+}
+
+#workout-timer {
+  display: block;
+  width: 100%;
+  margin: 0px auto;
+  font-size: 4em;
+}
