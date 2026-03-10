@@ -1,19 +1,25 @@
 import { convertSecondsToMinutes } from "./main.js";
 
 export default class WorkoutSession {
-  constructor(weekNumber, workoutNumer) {
+  constructor(weekNumber, workoutNumer, warmUpDurationSeconds = 5 * 60, coolDownDurationSeconds = 5 * 60) {
     this.weekNumber = weekNumber;
     this.workoutNumber = workoutNumer;
-    this.warmUpDuration = 5 * 60;
-    this.coolDownDuration = 5 * 60;
+    this.warmUpDuration = warmUpDurationSeconds;
+    this.coolDownDuration = coolDownDurationSeconds;
     this.workoutSession = this.createWorkoutPlan();
   }
 
   createWorkoutPlan() {
-    console.log(`Creating workout for week: ${this.weekNumber}, workout: ${this.workoutNumber}`);
-    let sessionOutline = Object.hasOwn(WORKOUT_PLAN_OUTLINE, `${this.weekNumber}-${this.workoutNumber}`)
-      ? WORKOUT_PLAN_OUTLINE[`${this.weekNumber}-${this.workoutNumber}`]
-      : WORKOUT_PLAN_OUTLINE[`${this.weekNumber}`];
+    let sessionOutline;
+    if (this.weekNumber <= 9) {
+      console.log(`Creating workout for week: ${this.weekNumber}, workout: ${this.workoutNumber}`);
+      sessionOutline = Object.hasOwn(WORKOUT_PLAN_OUTLINE, `${this.weekNumber}-${this.workoutNumber}`)
+        ? WORKOUT_PLAN_OUTLINE[`${this.weekNumber}-${this.workoutNumber}`]
+        : WORKOUT_PLAN_OUTLINE[`${this.weekNumber}`];
+    } else {
+      console.log(`Creating TEST workout for week: ${this.weekNumber}`);
+      sessionOutline = TEST_WORKOUT_PLAN_OUTLINE[`${this.weekNumber}`];
+    }
     return generateWorkoutSession(sessionOutline, this.warmUpDuration, this.coolDownDuration);
   }
 
@@ -261,7 +267,10 @@ const WORKOUT_PLAN_OUTLINE = {
       ],
     },
   ],
-  "23-17": [
+};
+
+const TEST_WORKOUT_PLAN_OUTLINE = {
+  23: [
     {
       reps: 2,
       actions: [

@@ -13,10 +13,7 @@ function main() {
 }
 
 function setupTestWorkout() {
-  workoutSession = new WorkoutSession(23, 17); // TEST WORKOUT PLAN
-  workoutSession.warmUpDuration = 10;
-  workoutSession.coolDownDuration = 10;
-  workoutSession.workoutSession = workoutSession.createWorkoutPlan();
+  workoutSession = new WorkoutSession(23, 17, 10, 10); // TEST WORKOUT PLAN
   workoutSession.logCurrentWorkoutPlan();
 }
 
