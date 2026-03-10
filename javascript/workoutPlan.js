@@ -10,27 +10,16 @@ export default class WorkoutSession {
   }
 
   createWorkoutPlan() {
-    console.log(
-      `Creating workout for week: ${this.weekNumber}, workout: ${this.workoutNumber}`,
-    );
-    let sessionOutline = Object.hasOwn(
-      WORKOUT_PLAN_OUTLINE,
-      `${this.weekNumber}-${this.workoutNumber}`,
-    )
+    console.log(`Creating workout for week: ${this.weekNumber}, workout: ${this.workoutNumber}`);
+    let sessionOutline = Object.hasOwn(WORKOUT_PLAN_OUTLINE, `${this.weekNumber}-${this.workoutNumber}`)
       ? WORKOUT_PLAN_OUTLINE[`${this.weekNumber}-${this.workoutNumber}`]
       : WORKOUT_PLAN_OUTLINE[`${this.weekNumber}`];
-    return generateWorkoutSession(
-      sessionOutline,
-      this.warmUpDuration,
-      this.coolDownDuration,
-    );
+    return generateWorkoutSession(sessionOutline, this.warmUpDuration, this.coolDownDuration);
   }
 
   //TODO: this will eventually be displayed in the UI
   logCurrentWorkoutPlan() {
-    this.workoutSession.forEach((step) =>
-      console.log(`${step.name}\t\t${convertSecondsToMinutes(step.duration)}`),
-    );
+    this.workoutSession.forEach((step) => console.log(`${step.name}\t\t${convertSecondsToMinutes(step.duration)}`));
   }
 }
 
@@ -272,13 +261,33 @@ const WORKOUT_PLAN_OUTLINE = {
       ],
     },
   ],
+  "23-17": [
+    {
+      reps: 2,
+      actions: [
+        {
+          activity: "Action 1",
+          durationSeconds: 7,
+        },
+        {
+          activity: "Action 2",
+          durationSeconds: 11,
+        },
+      ],
+    },
+    {
+      reps: 1,
+      actions: [
+        {
+          activity: "Action 5",
+          durationSeconds: 8,
+        },
+      ],
+    },
+  ],
 };
 
-function generateWorkoutSession(
-  sessionOutline,
-  warmUpDuration,
-  coolDownDuration,
-) {
+function generateWorkoutSession(sessionOutline, warmUpDuration, coolDownDuration) {
   let result = [];
   // add warm up
   result.push({ name: "WARM UP", duration: warmUpDuration });
