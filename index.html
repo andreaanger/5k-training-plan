@@ -18,11 +18,14 @@
         <h1 id="home-title">5k</h1>
         <button id="home-week-number" class="nav-btn" data-target="settings" type="button">WEEK 1</button>
         <div id="home-workout-number-div">
-          <!-- TODO: add javascript to change selected btn on click -->
-          <button class="workout-num-btn btn-selected" id="home-workout1-btn">1</button>
+          <button class="workout-num-btn workout-num-selected" id="home-workout1-btn">1</button>
           <button class="workout-num-btn" id="home-workout2-btn">2</button>
           <button class="workout-num-btn" id="home-workout3-btn">3</button>
         </div>
+        <button id="home-workout-view-workout-btn" class="nav-btn" data-target="workout-session" type="button" aria-label="View Workout Session">
+          <img id="home-eye-icon" src="./images/eye_icon.png" width="10%" height="10%" alt="" />
+          <p>view workout</p>
+        </button>
         <button id="home-start-btn" class="nav-btn" data-target="workout">START</button>
       </section>
       <!-- SETTINGS SCREEN -->
@@ -35,14 +38,13 @@
             <td><label class="settings-duration-title" for="settings-warmup-slider">WARM UP</label></td>
             <td>
               <div class="slidecontainer">
-                <input type="range" min="1" max="40" value="20" class="settings-duration-slider" id="settings-warmup-slider" />
+                <input type="range" min="0" max="40" value="20" class="settings-duration-slider" id="settings-warmup-slider" />
               </div>
             </td>
           </tr>
           <tr>
             <td></td>
             <td>
-              <!-- TODO: add javascript to change displayed value on change -->
               <p class="settings-duration-display" id="settings-warmup-duration-label">5:00</p>
             </td>
           </tr>
@@ -50,22 +52,20 @@
             <td><label class="settings-duration-title" for="settings-cooldown-slider">COOL DOWN</label></td>
             <td>
               <div class="slidecontainer">
-                <input type="range" min="1" max="40" value="20" class="settings-duration-slider" id="settings-cooldown-slider" />
+                <input type="range" min="0" max="40" value="20" class="settings-duration-slider" id="settings-cooldown-slider" />
               </div>
             </td>
           </tr>
           <tr>
             <td></td>
             <td>
-              <!-- TODO: add javascript to change displayed value on change -->
               <p class="settings-duration-display" id="settings-cooldown-duration-label">5:00</p>
             </td>
           </tr>
         </table>
         <h3 class="settings-header">WEEK NUMBER</h3>
-        <!-- TODO: add javascript to change selected btn on click -->
         <div id="settings-week-number-div">
-          <button class="settings-week-num-btn btn-selected" id="settings-week1-btn">1</button>
+          <button class="settings-week-num-btn" id="settings-week1-btn">1</button>
           <button class="settings-week-num-btn" id="settings-week2-btn">2</button>
           <button class="settings-week-num-btn" id="settings-week3-btn">3</button>
           <button class="settings-week-num-btn" id="settings-week4-btn">4</button>
@@ -75,8 +75,13 @@
           <button class="settings-week-num-btn" id="settings-week8-btn">8</button>
           <button class="settings-week-num-btn" id="settings-week9-btn">9</button>
         </div>
-        <!-- TODO: add javascript to update warmup, cooldown, and week number on click -->
         <button id="settings-save-btn" class="nav-btn" data-target="home">SAVE</button>
+      </section>
+      <!-- WORKOUT SESSION SCREEN -->
+      <section id="workout-session" class="screen">
+        <button id="workout-session-exit-btn" class="nav-btn" data-target="home" aria-label="Close workout session">X</button>
+        <h1>WORKOUT SESSION</h1>
+        <div id="workout-session-details"></div>
       </section>
       <!-- WORKOUT SCREEN -->
       <section id="workout" class="screen">

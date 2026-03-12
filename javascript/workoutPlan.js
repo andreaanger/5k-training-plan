@@ -22,11 +22,6 @@ export default class WorkoutSession {
     }
     return generateWorkoutSession(sessionOutline, this.warmUpDuration, this.coolDownDuration);
   }
-
-  //TODO: this will eventually be displayed in the UI
-  logCurrentWorkoutPlan() {
-    this.workoutSession.forEach((step) => console.log(`${step.name}\t\t${convertSecondsToMinutes(step.duration)}`));
-  }
 }
 
 /*

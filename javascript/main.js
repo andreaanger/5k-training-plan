@@ -3,18 +3,24 @@ const TESTING_MODE = false; // set to true to run test workout plan
 let workoutSession;
 
 function main() {
-  console.log("Welcome to the 5K Training App!");
   if (TESTING_MODE) {
     console.log("Setting up TEST workout plan...");
     setupTestWorkout();
   } else {
     workoutSession = new WorkoutSession(getCurrentPlanWeekNumber(), 1);
   }
+
+  // Update UI with current workout plan details
+  updateWeekNumberSettingsUI(workoutSession.weekNumber);
+}
+
+function updateWeekNumberSettingsUI(weekNumber) {
+  document.getElementById("home-week-number").textContent = `WEEK ${workoutSession.weekNumber}`;
+  document.getElementById(`settings-week${workoutSession.weekNumber}-btn`).classList.add("week-num-selected");
 }
 
 function setupTestWorkout() {
   workoutSession = new WorkoutSession(23, 17, 10, 10); // TEST WORKOUT PLAN
-  workoutSession.logCurrentWorkoutPlan();
 }
 
 /***************
@@ -34,9 +40,66 @@ export function navigateTo(screenId) {
   container.setAttribute("data-current-screen", screenId);
 }
 
-/*** START ***/
+/*** HOME - WORKOUT NUMBER SELECTION ***/
+document.querySelectorAll(".workout-num-btn").forEach((button) => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".workout-num-selected").forEach((btn) => btn.classList.remove("workout-num-selected"));
+    button.classList.add("workout-num-selected");
+    // Update workout session with new week number and regenerate workout session with new setting
+    workoutSession.workoutNumber = parseInt(button.textContent);
+    workoutSession.workoutSession = workoutSession.createWorkoutPlan();
+  });
+});
+
+/*** HOME - VIEW WORKOUT SESSION ***/
+document.getElementById("home-workout-view-workout-btn").addEventListener("click", function () {
+  // Update workout session details on workout session screen
+  const detailsElement = document.getElementById("workout-session-details");
+  detailsElement.innerHTML = `
+  <h3>WEEK ${workoutSession.weekNumber} - WORKOUT ${workoutSession.workoutNumber}</h3>
+  <table id="workout-session-table">
+  <tr><th>action</th><th>duration</th></tr>
+  ${workoutSession.workoutSession.map((step) => `<tr><td>${step.name}</td><td>${convertSecondsToMinutes(step.duration)}</td></tr>`).join("")}
+  </table>
+  `;
+  navigateTo("workout-session");
+});
+
+/*** HOME - START ***/
 document.getElementById("home-start-btn").addEventListener("click", function () {
   startWorkoutPlan(workoutSession);
+});
+
+/*** SETTINGS - DURATION SLIDERS ***/
+document.querySelectorAll(".settings-duration-slider").forEach((slider) => {
+  slider.addEventListener("input", () => {
+    // Update the label next to the slider with the current value
+    let duration = parseInt(slider.value);
+    let labelName = slider.id === "settings-warmup-slider" ? "settings-warmup-duration-label" : "settings-cooldown-duration-label";
+    //each slider step represents 15 seconds, so multiply by 15 to get total seconds, then convert to minutes:seconds format
+    document.getElementById(labelName).textContent = convertSecondsToMinutes(duration * 15);
+  });
+});
+
+/*** SETTINGS - WEEK NUMBER SELECTION ***/
+document.querySelectorAll(".settings-week-num-btn").forEach((button) => {
+  button.addEventListener("click", () => {
+    // Update selected button
+    document.querySelectorAll(".week-num-selected").forEach((btn) => btn.classList.remove("week-num-selected"));
+    button.classList.add("week-num-selected");
+    // Update week number on home screen as well
+    document.getElementById("home-week-number").textContent = `WEEK ${button.textContent}`;
+  });
+});
+
+/*** SETTINGS - SAVE BUTTON ***/
+document.getElementById("settings-save-btn").addEventListener("click", () => {
+  workoutSession.weekNumber = parseInt(document.querySelector(".week-num-selected").textContent);
+  workoutSession.warmUpDuration = parseInt(document.getElementById("settings-warmup-slider").value) * 15; // convert slider steps to seconds
+  workoutSession.coolDownDuration = parseInt(document.getElementById("settings-cooldown-slider").value) * 15; // convert slider steps to seconds
+  // regenerate workout session with new settings
+  workoutSession.workoutSession = workoutSession.createWorkoutPlan();
+  console.log("Settings saved");
 });
 
 /******************
@@ -54,7 +117,6 @@ function pad(num) {
 }
 
 function getCurrentPlanWeekNumber() {
-  console.log("calculating current plan week number...");
   /*
     NOTE: default is hard coded to my current week in the plan
     In a site with multiple users this would be determined by 
@@ -103,7 +165,6 @@ function startWorkoutTimerCountdown(actionName, duration) {
 }
 
 function workoutComplete() {
-  console.log("Workout complete! Great job!");
   document.getElementById("workout-action").textContent = "DONE";
   document.getElementById("workout-timer").style.display = "none";
 }
