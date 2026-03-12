@@ -15,8 +15,14 @@ function main() {
 }
 
 function updateWeekNumberSettingsUI(weekNumber) {
-  document.getElementById("home-week-number").textContent = `WEEK ${workoutSession.weekNumber}`;
-  document.getElementById(`settings-week${workoutSession.weekNumber}-btn`).classList.add("week-num-selected");
+  let homeWeekNumberElement = document.getElementById("home-week-number");
+  let settingsWeekButton = document.getElementById(`settings-week${weekNumber}-btn`);
+  if (weekNumber <= 9 && weekNumber >= 1) {
+    homeWeekNumberElement.textContent = `WEEK ${workoutSession.weekNumber}`;
+    settingsWeekButton.classList.add("week-num-selected");
+  } else {
+    homeWeekNumberElement.textContent = `TEST WEEK`;
+  }
 }
 
 function setupTestWorkout() {
@@ -62,7 +68,6 @@ document.getElementById("home-workout-view-workout-btn").addEventListener("click
   ${workoutSession.workoutSession.map((step) => `<tr><td>${step.name}</td><td>${convertSecondsToMinutes(step.duration)}</td></tr>`).join("")}
   </table>
   `;
-  navigateTo("workout-session");
 });
 
 /*** HOME - START ***/
@@ -87,8 +92,6 @@ document.querySelectorAll(".settings-week-num-btn").forEach((button) => {
     // Update selected button
     document.querySelectorAll(".week-num-selected").forEach((btn) => btn.classList.remove("week-num-selected"));
     button.classList.add("week-num-selected");
-    // Update week number on home screen as well
-    document.getElementById("home-week-number").textContent = `WEEK ${button.textContent}`;
   });
 });
 
@@ -97,8 +100,12 @@ document.getElementById("settings-save-btn").addEventListener("click", () => {
   workoutSession.weekNumber = parseInt(document.querySelector(".week-num-selected").textContent);
   workoutSession.warmUpDuration = parseInt(document.getElementById("settings-warmup-slider").value) * 15; // convert slider steps to seconds
   workoutSession.coolDownDuration = parseInt(document.getElementById("settings-cooldown-slider").value) * 15; // convert slider steps to seconds
+  // Update week number on home screen as well
+  document.getElementById("home-week-number").textContent = `WEEK ${workoutSession.weekNumber}`;
   // regenerate workout session with new settings
   workoutSession.workoutSession = workoutSession.createWorkoutPlan();
+  //Navigate to home screen after saving settings
+  navigateTo("home");
   console.log("Settings saved");
 });
 

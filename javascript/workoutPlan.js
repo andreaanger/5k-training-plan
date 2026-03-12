@@ -294,7 +294,9 @@ const TEST_WORKOUT_PLAN_OUTLINE = {
 function generateWorkoutSession(sessionOutline, warmUpDuration, coolDownDuration) {
   let result = [];
   // add warm up
-  result.push({ name: "WARM UP", duration: warmUpDuration });
+  if (warmUpDuration > 0) {
+    result.push({ name: "WARM UP", duration: warmUpDuration });
+  }
   // loop through outline to generate each step of the workout session
   let actions, totalReps;
   for (let sequence in sessionOutline) {
@@ -310,6 +312,8 @@ function generateWorkoutSession(sessionOutline, warmUpDuration, coolDownDuration
     }
   }
   // add cooldown
-  result.push({ name: "COOL DOWN", duration: coolDownDuration });
+  if (coolDownDuration > 0) {
+    result.push({ name: "COOL DOWN", duration: coolDownDuration });
+  }
   return result;
 }
