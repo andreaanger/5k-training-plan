@@ -4,7 +4,8 @@
 /*
 COLORS
 * BLACK: #001214
-* GREEN: #E0FF4F
+* NEON GREEN: #E0FF4F
+* DARK GREEN: #3E422E
 */
 
 body {
@@ -71,6 +72,11 @@ button {
   visibility: visible;
 }
 
+[data-current-screen="workout-session"] #workout-session {
+  opacity: 1;
+  visibility: visible;
+}
+
 /**********************
 **    HOME SCREEN    **
 ***********************/
@@ -115,8 +121,31 @@ button {
   background-color: #3e422e;
 }
 
-.btn-selected {
+.workout-num-selected,
+.week-num-selected {
   background-color: #e0ff4f;
+}
+
+#home-workout-view-workout-btn {
+  display: flex;
+  margin: 20px auto;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  background-color: transparent;
+}
+
+#home-workout-view-workout-btn p {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #e0ff4f;
+}
+
+#home-eye-icon {
+  width: 1.5rem; /* optional: more predictable than 10% */
+  height: 1.5rem;
+  display: block;
 }
 
 #home-start-btn {
@@ -133,7 +162,8 @@ button {
 /**************************
 **    SETTINGS SCREEN    **
 ***************************/
-#settings-exit-btn {
+#settings-exit-btn,
+#workout-session-exit-btn {
   display: block;
   width: 40px;
   height: 40px;
@@ -208,6 +238,31 @@ td {
   width: 100px;
   height: 40px;
   margin: 0 auto;
+}
+
+/**************************************
+**    VIEW WORKOUT SESSION SCREEN    **
+***************************************/
+
+#workout-session-table {
+  width: 80%;
+  max-width: 300px;
+  margin: auto;
+  border: 5px solid #e0ff4f;
+  border-collapse: collapse;
+}
+
+#workout-session-table th {
+  width: 80%;
+  margin: 30px auto;
+  padding: 10px 10px;
+  background-color: #e0ff4f;
+  color: #001214;
+  font-size: 1em;
+}
+
+#workout-session-table tr:nth-child(odd) {
+  background-color: #3e422e;
 }
 
 /**************************
