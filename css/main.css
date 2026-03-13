@@ -8,10 +8,26 @@ COLORS
 * DARK GREEN: #3E422E
 */
 
+/* Spacing scale */
+:root {
+  --space-xs: clamp(6px, 1vh, 10px);
+  --space-sm: clamp(10px, 1.8vh, 16px);
+  --space-md: clamp(14px, 2.4vh, 24px);
+  --space-lg: clamp(20px, 3.2vh, 32px);
+}
+
+html,
 body {
-  width: 90%;
+  height: 100%;
+}
+
+body {
+  width: 100%;
+  max-width: 430px;
+  box-sizing: border-box;
+  overflow: hidden;
   margin: 0 auto;
-  padding: 0;
+  padding: env(safe-area-inset-top) 12px env(safe-area-inset-bottom);
   background-color: #001214;
   color: #e0ff4f;
   font-family: "Futura", sans-serif;
@@ -22,13 +38,15 @@ body {
 #app-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100dvh; /* dynamic viewport, better on iPhone */
+  height: 100svh; /* fallback for Safari variants */
   overflow: hidden;
-  margin-top: 10px;
+  margin-top: 0;
 }
 
 button {
   background-color: #e0ff4f;
+  border: none;
   color: #001214;
   font-family: "Futura", sans-serif;
   font-weight: bold;
@@ -40,12 +58,9 @@ button {
 **************************/
 .screen {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-
-  /* Start invisible and non-clickable */
+  inset: 0;
+  box-sizing: border-box;
+  padding: 8px 0 12px;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.5s ease-in-out;
@@ -81,37 +96,49 @@ button {
 /**********************
 **    HOME SCREEN    **
 ***********************/
+#home,
+#settings,
+#workout-session {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+}
+
+#home > *,
+#settings > * {
+  margin: 0;
+}
+
 #home-workout-settings-btn {
-  width: 30%;
-  margin-left: 70%;
-  padding: 30px;
+  width: 20%;
+  padding: 10px;
+  margin: 0 0 0 auto;
   background-color: transparent;
   border: none;
 }
 
 #home-title {
-  display: block;
-  width: 100%;
-  margin: 0 auto 20%;
-  font-size: clamp(3em, 20vw, 10em);
+  margin: var(--space-lg) 0;
+  font-size: clamp(3em, 16vw, 6em);
+  line-height: 0.9;
 }
 
 #home-week-number {
-  display: block;
-  width: 50%;
-  margin: 30px auto;
-  padding: 10px 0px;
+  margin: var(--space-sm) 0;
+  padding: var(--space-xs) var(--space-lg);
   outline: 7px solid #e0ff4f;
   background-color: #001214;
   color: #e0ff4f;
-  font-size: 2em;
+  font-size: clamp(1.4rem, 6vw, 3rem);
 }
 
 #home-workout-number-div {
-  display: flex;
-  width: 50%;
-  margin: auto;
-  justify-content: space-between;
+  width: min(240px, 65%);
+  margin: 0 0 var(--space-lg);
 }
 
 .workout-num-btn,
@@ -129,11 +156,10 @@ button {
 
 #home-workout-view-workout-btn {
   display: flex;
-  margin: 20px auto;
+  margin: 0;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border: none;
   background-color: transparent;
 }
 
@@ -144,31 +170,40 @@ button {
 }
 
 #home-eye-icon {
-  width: 1.5rem; /* optional: more predictable than 10% */
+  width: 1.5rem;
   height: 1.5rem;
   display: block;
 }
 
 #home-start-btn {
-  display: block;
-  width: 60%;
-  margin: 25% auto;
+  width: min(280px, 80%);
+  margin-top: auto;
+  margin-bottom: var(--space-md);
+  font-size: clamp(1.1rem, 4.5vw, 1.6rem);
   padding: 15px 45px 15px 30px;
   background: linear-gradient(110deg, #001214 0% 10%, #e0ff4f 10% 30%, #e0ff4f 30% 83%, #001214 83% 86%, #001214 90%);
   border: none;
   color: #001214;
-  font-size: 1.6em;
 }
 
 /**************************
 **    SETTINGS SCREEN    **
 ***************************/
+
 #settings-exit-btn,
 #workout-session-exit-btn {
-  display: block;
-  width: 40px;
-  height: 40px;
-  margin-left: 80%;
+  width: 10%;
+  aspect-ratio: 1 / 1;
+  padding: 10px;
+  margin: 0 0 0 auto;
+}
+
+@media (max-height: 760px) {
+  #settings h1,
+  #workout-session h1 {
+    margin: 8px 0;
+    font-size: 1.5rem;
+  }
 }
 
 .settings-duration-title {
@@ -176,9 +211,7 @@ button {
 }
 
 .settings-header {
-  width: 60%;
-  margin: 30px auto;
-  padding: 10px 0px;
+  padding: var(--space-xs) var(--space-lg);
   outline: 7px solid #e0ff4f;
   font-size: 1em;
 }
@@ -230,27 +263,42 @@ td {
 }
 
 #settings-week-number-div {
-  width: 40%;
-  margin: 20px auto;
+  width: min(260px, 70%);
+  margin: 0;
+}
+
+.workout-num-btn,
+.settings-week-num-btn {
+  font-size: 1.6rem;
+  margin: 3px 0;
 }
 
 #settings-save-btn {
-  display: block;
-  width: 100px;
-  height: 40px;
-  margin: 0 auto;
+  width: min(150px, 50%);
+  margin-top: auto;
+  margin-bottom: var(--space-md);
+  font-size: clamp(0.9rem, 4.2vw, 1.3rem);
+  padding: var(--space-sm);
 }
 
 /**************************************
 **    VIEW WORKOUT SESSION SCREEN    **
 ***************************************/
+#workout-session h1 {
+  font-size: clamp(1.5em, 8vw, 4em);
+}
+
+#workout-session-plan {
+  font-size: clamp(1em, 5vw, 2.5em);
+}
 
 #workout-session-table {
-  width: 80%;
-  max-width: 300px;
+  width: 100%;
+  max-width: 350px;
   margin: auto;
   border: 5px solid #e0ff4f;
   border-collapse: collapse;
+  font-size: clamp(1em, 4vw, 1.5rem);
 }
 
 #workout-session-table th {
@@ -259,7 +307,6 @@ td {
   padding: 10px 10px;
   background-color: #e0ff4f;
   color: #001214;
-  font-size: 1em;
 }
 
 #workout-session-table tr:nth-child(odd) {
@@ -272,7 +319,7 @@ td {
 #workout-action,
 #action-title {
   display: block;
-  width: 100%;
+  width: 90%;
   margin: 100px auto 20px;
   font-size: 4em;
   text-align: center;
@@ -280,7 +327,7 @@ td {
 
 #workout-timer {
   display: block;
-  width: 100%;
+  width: 90%;
   margin: 0px auto;
   font-size: 4em;
 }

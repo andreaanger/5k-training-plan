@@ -62,7 +62,7 @@ document.getElementById("home-workout-view-workout-btn").addEventListener("click
   // Update workout session details on workout session screen
   const detailsElement = document.getElementById("workout-session-details");
   detailsElement.innerHTML = `
-  <h3>WEEK ${workoutSession.weekNumber} - WORKOUT ${workoutSession.workoutNumber}</h3>
+  <h3 id="workout-session-plan">WEEK ${workoutSession.weekNumber} - WORKOUT ${workoutSession.workoutNumber}</h3>
   <table id="workout-session-table">
   <tr><th>action</th><th>duration</th></tr>
   ${workoutSession.workoutSession.map((step) => `<tr><td>${step.name}</td><td>${convertSecondsToMinutes(step.duration)}</td></tr>`).join("")}
