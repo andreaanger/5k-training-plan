@@ -38,8 +38,9 @@ body {
 #app-container {
   position: relative;
   width: 100%;
-  height: 100dvh; /* dynamic viewport, better on iPhone */
+  height: 100vh; /* basic viewport fallback */
   height: 100svh; /* fallback for Safari variants */
+  height: 100dvh; /* dynamic viewport, better on iPhone */
   overflow: hidden;
   margin-top: 0;
 }
@@ -144,8 +145,9 @@ button {
 .workout-num-btn,
 .settings-week-num-btn {
   width: 30%;
+  margin: 3px 0;
   aspect-ratio: 1/1;
-  font-size: 2.5em;
+  font-size: 1.6rem;
   background-color: #3e422e;
 }
 
@@ -265,12 +267,6 @@ td {
 #settings-week-number-div {
   width: min(260px, 70%);
   margin: 0;
-}
-
-.workout-num-btn,
-.settings-week-num-btn {
-  font-size: 1.6rem;
-  margin: 3px 0;
 }
 
 #settings-save-btn {

@@ -115,9 +115,10 @@ function displayCurrentActionFullScreen(actionName) {
   navigateTo("action");
   document.body.style.backgroundColor = "#E0FF4F";
   document.getElementById("action-title").textContent = actionName;
-  setTimeout(() => {
+  let timeOutID = setTimeout(() => {
     // display workout screen again
     document.body.style.backgroundColor = "#001214";
+    clearTimeout(timeOutID);
     navigateTo("workout");
   }, 2000); // Waits for 2000 milliseconds (2 seconds)
 }
