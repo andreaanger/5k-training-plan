@@ -109,6 +109,18 @@ document.getElementById("settings-save-btn").addEventListener("click", () => {
   console.log("Settings saved");
 });
 
+/*** ACTION SCREEN ***/
+function displayCurrentActionFullScreen(actionName) {
+  // display new action
+  navigateTo("action");
+  document.body.style.backgroundColor = "#E0FF4F";
+  document.getElementById("action-title").textContent = actionName;
+  setTimeout(() => {
+    // display workout screen again
+    document.body.style.backgroundColor = "#001214";
+    navigateTo("workout");
+  }, 2000); // Waits for 2000 milliseconds (2 seconds)
+}
 /******************
  **    WORKOUT   **
  ******************/
@@ -147,6 +159,7 @@ async function startWorkoutPlan(workout) {
   );
   // Run each step in order; wait for the current timer to finish before starting the next.
   for (const step of workout.workoutSession) {
+    displayCurrentActionFullScreen(step.name);
     await startWorkoutTimerCountdown(step.name, step.duration);
   }
   workoutComplete();
