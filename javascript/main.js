@@ -173,15 +173,19 @@ function startWorkoutTimerCountdown(actionName, duration) {
     document.getElementById("workout-action").textContent = actionName;
     console.log(`Starting ${actionName} for ${convertSecondsToMinutes(duration)}...`);
 
+    // Use setInterval only for display updates — imprecision here is fine.
     const countdownInterval = setInterval(() => {
       const remainingTime = Math.max(0, targetTime - Date.now());
       timerCountdownElement.textContent = convertSecondsToMinutes(Math.ceil(remainingTime / 1000));
-      if (remainingTime <= 0) {
-        clearInterval(countdownInterval);
-        console.log(`${actionName} complete!`);
-        resolve();
-      }
-    }, 1000);
+    }, 500);
+
+    // Use a single setTimeout for step completion so drift doesn't accumulate across steps.
+    setTimeout(() => {
+      clearInterval(countdownInterval);
+      timerCountdownElement.textContent = convertSecondsToMinutes(0);
+      console.log(`${actionName} complete!`);
+      resolve();
+    }, duration * 1000);
   });
 }
 
