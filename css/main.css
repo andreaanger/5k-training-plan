@@ -322,10 +322,42 @@ td {
 }
 
 #workout-timer {
-  display: block;
-  width: 90%;
-  margin: 0px auto;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  margin: 0;
   font-size: 4em;
+}
+
+#workout-timer-ring {
+  position: relative;
+  width: min(80vw, 300px);
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+}
+
+#workout-timer-ring-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+#workout-timer-ring-track,
+#workout-timer-ring-progress {
+  fill: none;
+  stroke-width: 8;
+}
+
+#workout-timer-ring-track {
+  stroke: #3e422e;
+}
+
+#workout-timer-ring-progress {
+  stroke: #e0ff4f;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.4s linear;
 }
 
 /************************
