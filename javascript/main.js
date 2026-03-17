@@ -182,7 +182,7 @@ function startWorkoutTimerCountdown(actionName, duration) {
     timerCountdownElement.style.display = "grid";
     timerRingProgressElement.style.display = "block";
     timerRingProgressElement.style.strokeDasharray = `${ringCircumference}`;
-    timerRingProgressElement.style.strokeDashoffset = `${ringCircumference}`;
+    timerRingProgressElement.style.strokeDashoffset = "0";
 
     let completed = false;
     let countdownInterval;
@@ -194,7 +194,7 @@ function startWorkoutTimerCountdown(actionName, duration) {
       clearInterval(countdownInterval);
       clearTimeout(completionTimeout);
       timerCountdownElement.textContent = convertSecondsToMinutes(0);
-      timerRingProgressElement.style.strokeDashoffset = "0";
+      timerRingProgressElement.style.strokeDashoffset = `${ringCircumference}`;
       console.log(`${actionName} complete!`);
       resolve();
     };
@@ -204,7 +204,7 @@ function startWorkoutTimerCountdown(actionName, duration) {
       const remainingTime = Math.max(0, targetTime - Date.now());
       const progress = remainingTime / (duration * 1000);
       timerCountdownElement.textContent = convertSecondsToMinutes(Math.ceil(remainingTime / 1000));
-      timerRingProgressElement.style.strokeDashoffset = `${ringCircumference * progress}`;
+      timerRingProgressElement.style.strokeDashoffset = `${ringCircumference * (1 - progress)}`;
       if (remainingTime <= 0) {
         complete();
       }
