@@ -1,6 +1,7 @@
 import WorkoutSession from "./workoutPlan.js";
 const TESTING_MODE = false; // set to true to run test workout plan
 let workoutSession;
+const actionTransitionBeep = new Audio("audio/195927__oneiroidstate__beep-1000-hz-length-of-1-frame-to-24-framesec-code-film.wav");
 
 function main() {
   if (TESTING_MODE) {
@@ -115,6 +116,9 @@ function displayCurrentActionFullScreen(actionName) {
   navigateTo("action");
   document.body.style.backgroundColor = "#E0FF4F";
   document.getElementById("action-title").textContent = actionName;
+  //play new action sound effect
+  playActionTransitionBeep();
+  // After 2 seconds, transition back to workout screen to show next action and timer
   let timeOutID = setTimeout(() => {
     // display workout screen again
     document.body.style.backgroundColor = "#001214";
@@ -170,8 +174,16 @@ function startWorkoutTimerCountdown(actionName, duration) {
   return new Promise((resolve) => {
     const targetTime = Date.now() + duration * 1000;
     const timerCountdownElement = document.getElementById("workout-timer");
+    const timerRingProgressElement = document.getElementById("workout-timer-ring-progress");
+    const ringRadius = 52;
+    const ringCircumference = 2 * Math.PI * ringRadius;
     document.getElementById("workout-action").textContent = actionName;
     console.log(`Starting ${actionName} for ${convertSecondsToMinutes(duration)}...`);
+
+    timerCountdownElement.style.display = "grid";
+    timerRingProgressElement.style.display = "block";
+    timerRingProgressElement.style.strokeDasharray = `${ringCircumference}`;
+    timerRingProgressElement.style.strokeDashoffset = "0";
 
     let completed = false;
     let countdownInterval;
@@ -183,6 +195,7 @@ function startWorkoutTimerCountdown(actionName, duration) {
       clearInterval(countdownInterval);
       clearTimeout(completionTimeout);
       timerCountdownElement.textContent = convertSecondsToMinutes(0);
+      timerRingProgressElement.style.strokeDashoffset = `${ringCircumference}`;
       console.log(`${actionName} complete!`);
       resolve();
     };
@@ -190,7 +203,9 @@ function startWorkoutTimerCountdown(actionName, duration) {
     // Use setInterval only for display updates — imprecision here is fine.
     countdownInterval = setInterval(() => {
       const remainingTime = Math.max(0, targetTime - Date.now());
+      const progress = remainingTime / (duration * 1000);
       timerCountdownElement.textContent = convertSecondsToMinutes(Math.ceil(remainingTime / 1000));
+      timerRingProgressElement.style.strokeDashoffset = `${ringCircumference * (1 - progress)}`;
       if (remainingTime <= 0) {
         complete();
       }
@@ -198,7 +213,7 @@ function startWorkoutTimerCountdown(actionName, duration) {
 
     // Use a single setTimeout for step completion so drift doesn't accumulate across steps.
     const completionDelay = Math.max(0, targetTime - Date.now());
-    setTimeout(() => {
+    completionTimeout = setTimeout(() => {
       complete();
     }, completionDelay);
   });
@@ -206,7 +221,20 @@ function startWorkoutTimerCountdown(actionName, duration) {
 
 function workoutComplete() {
   document.getElementById("workout-action").textContent = "DONE";
-  document.getElementById("workout-timer").style.display = "none";
+  document.getElementById("workout-timer-ring").style.display = "none";
+}
+
+function playActionTransitionBeep() {
+  try {
+    const playResult = actionTransitionBeep.play();
+    if (playResult && typeof playResult.then === "function") {
+      playResult.catch((error) => {
+        console.error("Failed to play action sound effect:", error);
+      });
+    }
+  } catch (error) {
+    console.error("Error while starting action sound effect playback:", error);
+  }
 }
 
 main();
