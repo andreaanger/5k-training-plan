@@ -1,6 +1,7 @@
 import WorkoutSession from "./workoutPlan.js";
 const TESTING_MODE = false; // set to true to run test workout plan
 let workoutSession;
+const actionTransitionBeep = new Audio("audio/195927__oneiroidstate__beep-1000-hz-length-of-1-frame-to-24-framesec-code-film.wav");
 
 function main() {
   if (TESTING_MODE) {
@@ -116,7 +117,7 @@ function displayCurrentActionFullScreen(actionName) {
   document.body.style.backgroundColor = "#E0FF4F";
   document.getElementById("action-title").textContent = actionName;
   //play new action sound effect
-  new Audio("audio/195927__oneiroidstate__beep-1000-hz-length-of-1-frame-to-24-framesec-code-film.wav").play();
+  playActionTransitionBeep();
   // After 2 seconds, transition back to workout screen to show next action and timer
   let timeOutID = setTimeout(() => {
     // display workout screen again
@@ -220,8 +221,20 @@ function startWorkoutTimerCountdown(actionName, duration) {
 
 function workoutComplete() {
   document.getElementById("workout-action").textContent = "DONE";
-  document.getElementById("workout-timer").style.display = "none";
-  document.getElementById("workout-timer-ring-progress").style.display = "none";
+  document.getElementById("workout-timer-ring").style.display = "none";
+}
+
+function playActionTransitionBeep() {
+  try {
+    const playResult = actionTransitionBeep.play();
+    if (playResult && typeof playResult.then === "function") {
+      playResult.catch((error) => {
+        console.error("Failed to play action sound effect:", error);
+      });
+    }
+  } catch (error) {
+    console.error("Error while starting action sound effect playback:", error);
+  }
 }
 
 main();
