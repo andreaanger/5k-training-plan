@@ -45,6 +45,9 @@ document.querySelectorAll(".nav-btn").forEach((button) => {
 export function navigateTo(screenId) {
   const container = document.getElementById("app-container");
   container.setAttribute("data-current-screen", screenId);
+  if (screenId === "settings") {
+    syncSettingsUIWithCurrentWorkout();
+  }
 }
 
 /*** HOME - WORKOUT NUMBER SELECTION ***/
@@ -75,6 +78,20 @@ document.getElementById("home-workout-view-workout-btn").addEventListener("click
 document.getElementById("home-start-btn").addEventListener("click", function () {
   startWorkoutPlan(workoutSession);
 });
+
+/*** SETTINGS - DEFAULT VALUES ON NAV TO ***/
+function syncSettingsUIWithCurrentWorkout() {
+  document.getElementById("settings-warmup-slider").value = workoutSession.warmUpDuration / 15;
+  document.getElementById("settings-cooldown-slider").value = workoutSession.coolDownDuration / 15;
+  document.getElementById("settings-warmup-duration-label").textContent = convertSecondsToMinutes(workoutSession.warmUpDuration);
+  document.getElementById("settings-cooldown-duration-label").textContent = convertSecondsToMinutes(workoutSession.coolDownDuration);
+  document.querySelectorAll(".settings-week-num-btn").forEach((button) => {
+    button.classList.remove("week-num-selected");
+    if (parseInt(button.textContent) === workoutSession.weekNumber) {
+      button.classList.add("week-num-selected");
+    }
+  });
+}
 
 /*** SETTINGS - DURATION SLIDERS ***/
 document.querySelectorAll(".settings-duration-slider").forEach((slider) => {
