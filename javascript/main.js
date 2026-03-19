@@ -3,7 +3,20 @@ const TESTING_MODE = false; // set to true to run test workout plan
 let workoutSession;
 const actionTransitionBeep = new Audio("audio/195927__oneiroidstate__beep-1000-hz-length-of-1-frame-to-24-framesec-code-film.wav");
 
+function configureAudioForMixing() {
+  // Safari/iOS can mix app audio with other audio when using an "ambient" session.
+  if ("audioSession" in navigator && navigator.audioSession) {
+    try {
+      navigator.audioSession.type = "ambient";
+    } catch (error) {
+      console.warn("Audio session type could not be set:", error);
+    }
+  }
+}
+
 function main() {
+  configureAudioForMixing();
+
   if (TESTING_MODE) {
     console.log("Setting up TEST workout plan...");
     setupTestWorkout();
@@ -243,6 +256,8 @@ function workoutComplete() {
 
 function playActionTransitionBeep() {
   try {
+    configureAudioForMixing();
+    actionTransitionBeep.currentTime = 0;
     const playResult = actionTransitionBeep.play();
     if (playResult && typeof playResult.then === "function") {
       playResult.catch((error) => {
