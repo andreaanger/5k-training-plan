@@ -2,6 +2,7 @@ import WorkoutSession from "./workoutPlan.js";
 const TESTING_MODE = false; // set to true to run test workout plan
 let workoutSession;
 const actionTransitionBeep = new Audio("audio/195927__oneiroidstate__beep-1000-hz-length-of-1-frame-to-24-framesec-code-film.wav");
+let targetTime;
 
 function configureAudioForMixing() {
   // Safari/iOS can mix app audio with other audio when using an "ambient" session.
@@ -192,6 +193,8 @@ async function startWorkoutPlan(workout) {
   console.log(
     `Starting workout:\n WEEK: ${workout.weekNumber}\n Number: ${workout.workoutNumber}\n Warmup: ${convertSecondsToMinutes(workout.warmUpDuration)}\n Cooldown: ${convertSecondsToMinutes(workout.coolDownDuration)}`,
   );
+  // save the current time at start of the workout session to calculate accurate end times for each step, rather than relying on setTimeout which can drift over time
+  targetTime = Date.now();
   // Run each step in order; wait for the current timer to finish before starting the next.
   for (const step of workout.workoutSession) {
     displayCurrentActionFullScreen(step.name);
@@ -202,7 +205,8 @@ async function startWorkoutPlan(workout) {
 
 function startWorkoutTimerCountdown(actionName, duration) {
   return new Promise((resolve) => {
-    const targetTime = Date.now() + duration * 1000;
+    targetTime = targetTime + duration * 1000;
+    // Timer UI
     const timerCountdownElement = document.getElementById("workout-timer");
     const timerRingProgressElement = document.getElementById("workout-timer-ring-progress");
     const ringRadius = 52;
@@ -215,6 +219,7 @@ function startWorkoutTimerCountdown(actionName, duration) {
     timerRingProgressElement.style.strokeDasharray = `${ringCircumference}`;
     timerRingProgressElement.style.strokeDashoffset = "0";
 
+    // Timer logic
     let completed = false;
     let countdownInterval;
     let completionTimeout;
