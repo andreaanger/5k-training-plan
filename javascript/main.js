@@ -2,7 +2,6 @@ import WorkoutSession from "./workoutPlan.js";
 const TESTING_MODE = false; // set to true to run test workout plan
 let workoutSession;
 const actionTransitionBeep = new Audio("audio/195927__oneiroidstate__beep-1000-hz-length-of-1-frame-to-24-framesec-code-film.wav");
-let targetTime;
 
 function configureAudioForMixing() {
   // Safari/iOS can mix app audio with other audio when using an "ambient" session.
@@ -90,6 +89,7 @@ document.getElementById("home-workout-view-workout-btn").addEventListener("click
 
 /*** HOME - START ***/
 document.getElementById("home-start-btn").addEventListener("click", function () {
+  this.disabled = true;
   startWorkoutPlan(workoutSession);
 });
 
@@ -199,18 +199,18 @@ async function startWorkoutPlan(workout) {
     `Starting workout:\n WEEK: ${workout.weekNumber}\n Number: ${workout.workoutNumber}\n Warmup: ${convertSecondsToMinutes(workout.warmUpDuration)}\n Cooldown: ${convertSecondsToMinutes(workout.coolDownDuration)}`,
   );
   // save the current time at start of the workout session to calculate accurate end times for each step, rather than relying on setTimeout which can drift over time
-  targetTime = Date.now();
+  let targetTime = Date.now();
   // Run each step in order; wait for the current timer to finish before starting the next.
   for (const step of workout.workoutSession) {
     displayCurrentActionFullScreen(step.name);
-    await startWorkoutTimerCountdown(step.name, step.duration);
+    targetTime = targetTime + step.duration * 1000;
+    await startWorkoutTimerCountdown(step.name, step.duration, targetTime);
   }
   workoutComplete();
 }
 
-function startWorkoutTimerCountdown(actionName, duration) {
+function startWorkoutTimerCountdown(actionName, duration, targetTime) {
   return new Promise((resolve) => {
-    targetTime = targetTime + duration * 1000;
     // Timer UI
     const timerCountdownElement = document.getElementById("workout-timer");
     const timerRingProgressElement = document.getElementById("workout-timer-ring-progress");
