@@ -48,6 +48,17 @@ You'll need a local development server to run the app
 - HTML
 - CSS
 - JavaScript
+- GitHub Copilot
+
+## 🤖 AI-Assisted Development
+
+This project was built with the assistance of AI. GitHub Copilot was used to accelerate:
+
+- **Development:** boilerplate, debugging, and logic implementation.
+- **Project Management:** generation of GitHub Issues.
+- **Quality Assurance:** PR reviews for code consistency and bug detection.
+
+_Note: While AI helped streamline the creation of issues and code, every line has been human-verified to ensure it meets the project's quality standards_
 
 ## ⚠️ Limitations
 
