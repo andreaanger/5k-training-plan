@@ -177,12 +177,17 @@ function getCurrentPlanWeekNumber() {
     In a site with multiple users this would be determined by 
     the current users start date
   */
-  const week1Start = new Date(2026, 1, 23); // months are 0-indexed (ex: Feb = 1)
+  const week1Start = new Date(2026, 2, 9); // months are 0-indexed (ex: Feb = 1)
   const currentDate = new Date();
   // Difference in days between currentDate and week1Start
   const diffInMs = currentDate - week1Start;
   const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-  return Math.floor(diffInDays / 7) + 1;
+  let weekNumber = Math.floor(diffInDays / 7) + 1;
+  if (weekNumber > 9) {
+    console.log("Week number is out of plan range, defaulting to week 1");
+    weekNumber = 1;
+  }
+  return weekNumber;
 }
 
 /**************************
