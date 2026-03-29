@@ -3,7 +3,20 @@ const TESTING_MODE = false; // set to true to run test workout plan
 let workoutSession;
 const actionTransitionBeep = new Audio("audio/195927__oneiroidstate__beep-1000-hz-length-of-1-frame-to-24-framesec-code-film.wav");
 
+function configureAudioForMixing() {
+  // Safari/iOS can mix app audio with other audio when using an "ambient" session.
+  if ("audioSession" in navigator && navigator.audioSession) {
+    try {
+      navigator.audioSession.type = "ambient";
+    } catch (error) {
+      console.warn("Audio session type could not be set:", error);
+    }
+  }
+}
+
 function main() {
+  configureAudioForMixing();
+
   if (TESTING_MODE) {
     console.log("Setting up TEST workout plan...");
     setupTestWorkout();
@@ -45,6 +58,9 @@ document.querySelectorAll(".nav-btn").forEach((button) => {
 export function navigateTo(screenId) {
   const container = document.getElementById("app-container");
   container.setAttribute("data-current-screen", screenId);
+  if (screenId === "settings") {
+    syncSettingsUIWithCurrentWorkout();
+  }
 }
 
 /*** HOME - WORKOUT NUMBER SELECTION ***/
@@ -73,8 +89,23 @@ document.getElementById("home-workout-view-workout-btn").addEventListener("click
 
 /*** HOME - START ***/
 document.getElementById("home-start-btn").addEventListener("click", function () {
+  this.disabled = true;
   startWorkoutPlan(workoutSession);
 });
+
+/*** SETTINGS - DEFAULT VALUES ON NAV TO ***/
+function syncSettingsUIWithCurrentWorkout() {
+  document.getElementById("settings-warmup-slider").value = workoutSession.warmUpDuration / 15;
+  document.getElementById("settings-cooldown-slider").value = workoutSession.coolDownDuration / 15;
+  document.getElementById("settings-warmup-duration-label").textContent = convertSecondsToMinutes(workoutSession.warmUpDuration);
+  document.getElementById("settings-cooldown-duration-label").textContent = convertSecondsToMinutes(workoutSession.coolDownDuration);
+  document.querySelectorAll(".settings-week-num-btn").forEach((button) => {
+    button.classList.remove("week-num-selected");
+    if (parseInt(button.textContent) === workoutSession.weekNumber) {
+      button.classList.add("week-num-selected");
+    }
+  });
+}
 
 /*** SETTINGS - DURATION SLIDERS ***/
 document.querySelectorAll(".settings-duration-slider").forEach((slider) => {
@@ -146,12 +177,17 @@ function getCurrentPlanWeekNumber() {
     In a site with multiple users this would be determined by 
     the current users start date
   */
-  const week1Start = new Date(2026, 1, 23); // months are 0-indexed (ex: Feb = 1)
+  const week1Start = new Date(2026, 2, 9); // months are 0-indexed (ex: Feb = 1)
   const currentDate = new Date();
   // Difference in days between currentDate and week1Start
   const diffInMs = currentDate - week1Start;
   const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-  return Math.floor(diffInDays / 7) + 1;
+  let weekNumber = Math.floor(diffInDays / 7) + 1;
+  if (weekNumber > 9) {
+    console.log("Week number is out of plan range, defaulting to week 1");
+    weekNumber = 1;
+  }
+  return weekNumber;
 }
 
 /**************************
@@ -162,17 +198,20 @@ async function startWorkoutPlan(workout) {
   console.log(
     `Starting workout:\n WEEK: ${workout.weekNumber}\n Number: ${workout.workoutNumber}\n Warmup: ${convertSecondsToMinutes(workout.warmUpDuration)}\n Cooldown: ${convertSecondsToMinutes(workout.coolDownDuration)}`,
   );
+  // save the current time at start of the workout session to calculate accurate end times for each step, rather than relying on setTimeout which can drift over time
+  let targetTime = Date.now();
   // Run each step in order; wait for the current timer to finish before starting the next.
   for (const step of workout.workoutSession) {
     displayCurrentActionFullScreen(step.name);
-    await startWorkoutTimerCountdown(step.name, step.duration);
+    targetTime = targetTime + step.duration * 1000;
+    await startWorkoutTimerCountdown(step.name, step.duration, targetTime);
   }
   workoutComplete();
 }
 
-function startWorkoutTimerCountdown(actionName, duration) {
+function startWorkoutTimerCountdown(actionName, duration, targetTime) {
   return new Promise((resolve) => {
-    const targetTime = Date.now() + duration * 1000;
+    // Timer UI
     const timerCountdownElement = document.getElementById("workout-timer");
     const timerRingProgressElement = document.getElementById("workout-timer-ring-progress");
     const ringRadius = 52;
@@ -185,6 +224,7 @@ function startWorkoutTimerCountdown(actionName, duration) {
     timerRingProgressElement.style.strokeDasharray = `${ringCircumference}`;
     timerRingProgressElement.style.strokeDashoffset = "0";
 
+    // Timer logic
     let completed = false;
     let countdownInterval;
     let completionTimeout;
@@ -226,6 +266,8 @@ function workoutComplete() {
 
 function playActionTransitionBeep() {
   try {
+    configureAudioForMixing();
+    actionTransitionBeep.currentTime = 0;
     const playResult = actionTransitionBeep.play();
     if (playResult && typeof playResult.then === "function") {
       playResult.catch((error) => {
